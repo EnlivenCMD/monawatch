@@ -1,0 +1,29 @@
+
+{% assign compare_price = product.compare_at_price %}
+{% assign main_price = product.price %}
+
+<div style="display: flex; flex-direction: column; gap: 1px;">
+
+  {% if compare_price > main_price %}
+    <div style="font-size: 20px; font-weight: 600; color: gray;">
+      Retail
+      <span style="text-decoration: line-through; font-weight: 400;">
+        {{ compare_price | money_without_trailing_zeros }}
+      </span>
+    </div>
+  {% endif %}
+
+  {% if main_price %}
+    <div style="font-size: 27px; font-weight: bold; color: #1964ae;">
+      {{ main_price | money_without_trailing_zeros }}
+    </div>
+  {% endif %}
+
+</div>
+
+
+
+
+
+
+

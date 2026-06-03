@@ -1,0 +1,300 @@
+{% doc %}
+  @prompt
+    create section having heading with center align and can be customize
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-heading-block-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.padding_top }}px 20px {{ block.settings.padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-heading-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    text-align: {{ block.settings.alignment }};
+  }
+
+  .ai-heading-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.text_color }};
+    font-weight: {{ block.settings.font_weight }};
+    line-height: {{ block.settings.line_height }};
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    {% if block.settings.text_transform != 'none' %}
+      text-transform: {{ block.settings.text_transform }};
+    {% endif %}
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-heading-block-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_top | times: 0.7 }}px 15px {{ block.settings.padding_bottom | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<custom-heading-{{ ai_gen_id }} class="ai-heading-block-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-heading-container-{{ ai_gen_id }}">
+    {% if block.settings.heading_tag == 'h1' %}
+      <h1 class="ai-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h1>
+    {% elsif block.settings.heading_tag == 'h2' %}
+      <h2 class="ai-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h2>
+    {% elsif block.settings.heading_tag == 'h3' %}
+      <h3 class="ai-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h3>
+    {% elsif block.settings.heading_tag == 'h4' %}
+      <h4 class="ai-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h4>
+    {% elsif block.settings.heading_tag == 'h5' %}
+      <h5 class="ai-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h5>
+    {% else %}
+      <h6 class="ai-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h6>
+    {% endif %}
+  </div>
+</custom-heading-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CustomHeading{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('custom-heading-{{ ai_gen_id }}', CustomHeading{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customizable heading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "Your Heading Here"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Font size",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": -2,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 400,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customizable heading"
+    }
+  ]
+}
+{% endschema %}

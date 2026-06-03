@@ -1,0 +1,83 @@
+{% comment %}
+  Stable Product Rating (4.0–5.0)
+  Deterministic per product using product.id
+{% endcomment %}
+
+{% assign ratings = "4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,5.0" | split: "," %}
+
+{% assign index = product.id | modulo: ratings.size %}
+{% assign random_rating = ratings[index] | plus: 0 %}
+
+{% assign full_stars = random_rating | floor %}
+{% assign decimal = random_rating | minus: full_stars %}
+
+{% if decimal >= 0.5 %}
+  {% assign half_star = 1 %}
+{% else %}
+  {% assign half_star = 0 %}
+{% endif %}
+
+{% assign empty_stars = 5 | minus: full_stars | minus: half_star %}
+
+<a href="#reviews" class="dev-product-rating" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+
+  <span class="dev-stars" style="display:flex; gap:4px;">
+
+    {% comment %} FULL STARS {% endcomment %}
+    {% for i in (1..full_stars) %}
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#f5b301" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2l2.9 6.63 7.1.61-5.3 4.59 1.58 6.97L12 17.77l-6.28 3.03L7.3 13.83 2 9.24l7.1-.61L12 2z"/>
+      </svg>
+    {% endfor %}
+
+    {% comment %} HALF STAR {% endcomment %}
+    {% if half_star == 1 %}
+      <svg width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="halfGradient">
+            <stop offset="50%" stop-color="#f5b301"/>
+            <stop offset="50%" stop-color="#ddd"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#halfGradient)" d="M12 2l2.9 6.63 7.1.61-5.3 4.59 1.58 6.97L12 17.77l-6.28 3.03L7.3 13.83 2 9.24l7.1-.61L12 2z"/>
+      </svg>
+    {% endif %}
+
+    {% comment %} EMPTY STARS {% endcomment %}
+    {% for i in (1..empty_stars) %}
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ddd" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2l2.9 6.63 7.1.61-5.3 4.59 1.58 6.97L12 17.77l-6.28 3.03L7.3 13.83 2 9.24l7.1-.61L12 2z"/>
+      </svg>
+    {% endfor %}
+
+  </span>
+
+  <span class="dev-rating-text" style="font-size:16px; color:#333;">
+    {{ random_rating }} • 
+    <span class="dev-see-reviews">See reviews</span>
+  </span>
+
+</a>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const ratingLink = document.querySelector('.dev-product-rating');
+
+  if (!ratingLink) return;
+
+  ratingLink.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const reviewSection = document.querySelector('.reputon-dual-row-carousel-container');
+
+    if (reviewSection) {
+      reviewSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+
+});
+</script>

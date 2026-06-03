@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "revamp_hero": {
+      "type": "revamp-june26-hero-banner",
+      "settings": {
+        "heading": "GET A FREE WATCH ROLL",
+        "subheading": "ON ORDERS ABOVE AED 3000.",
+        "button_label": "CLAIM OFFER",
+        "button_link": "/collections/all",
+        "overlay_opacity": 10
+      }
+    },
+    "revamp_featured_brands": {
+      "type": "revamp-june26-featured-brands",
+      "blocks": {
+        "brand_seiko": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "SEIKO",
+            "tagline": "BUILT FOR PERFECTION",
+            "button_label": "SHOP SEIKO",
+            "collection": "seiko"
+          }
+        },
+        "brand_orient": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "ORIENT",
+            "tagline": "ENGINEERED ELEGANCE",
+            "button_label": "SHOP ORIENT",
+            "collection": "orient"
+          }
+        }
+      },
+      "block_order": ["brand_seiko", "brand_orient"],
+      "settings": {
+        "heading": "FEATURED WATCH BRANDS",
+        "subheading": "Explore original watches from trusted global brands.",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "revamp_explore_brands": {
+      "type": "revamp-june26-explore-brands",
+      "blocks": {
+        "brand_edifice": {
+          "type": "brand",
+          "settings": { "brand_name": "EDIFICE", "collection": "casio-edifice" }
+        },
+        "brand_casio": {
+          "type": "brand",
+          "settings": { "brand_name": "CASIO", "collection": "casio" }
+        },
+        "brand_westend": {
+          "type": "brand",
+          "settings": { "brand_name": "WEST END WATCH", "collection": "west-end-watch-co" }
+        },
+        "brand_citizen": {
+          "type": "brand",
+          "settings": { "brand_name": "CITIZEN", "collection": "citizen" }
+        },
+        "brand_gshock": {
+          "type": "brand",
+          "settings": { "brand_name": "G-SHOCK", "collection": "g-shock" }
+        },
+        "brand_orientstar": {
+          "type": "brand",
+          "settings": { "brand_name": "ORIENT STAR", "collection": "orientstar" }
+        }
+      },
+      "block_order": ["brand_edifice", "brand_casio", "brand_westend", "brand_citizen", "brand_gshock", "brand_orientstar"],
+      "settings": {
+        "heading": "EXPLORE MORE BRANDS",
+        "subheading": "Discover more authentic watch brands available at MonaWatch.",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": ["revamp_hero", "revamp_featured_brands", "revamp_explore_brands"]
+}

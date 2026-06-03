@@ -1,0 +1,27 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign stock = current_variant.inventory_quantity %}
+
+{% if current_variant.inventory_management == "shopify" and current_variant.inventory_policy == "deny" %}
+
+  {% if stock > 4 %}
+    <div class="dev-stock in-stock">
+      Limited Stock: 5 item left!
+    </div>
+
+  {% elsif stock <= 4 and stock >= 3 %}
+    <div class="dev-stock limited-stock">
+      Almost Gone! Only {{ stock }} item left
+    </div>
+
+  {% elsif stock <= 2 and stock > 0 %}
+    <div class="dev-stock critical-stock">
+      Hurry! Only {{ stock }} item left!
+    </div>
+
+  {% else %}
+    <div class="dev-stock out-stock">
+      Out of Stock
+    </div>
+  {% endif %}
+
+{% endif %}

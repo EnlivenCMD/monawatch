@@ -1,0 +1,207 @@
+{% assign has_faq = false %}
+
+{% for collection in product.collections %}
+  {% if collection.metafields.custom.collection_faqs.value != blank %}
+    {% assign has_faq = true %}
+  {% endif %}
+{% endfor %}
+
+{% if has_faq %}
+
+<section class="product-faq page-width">
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+
+  <div class="faq-accordion">
+
+    {% for collection in product.collections %}
+      {% assign faqs = collection.metafields.custom.collection_faqs.value %}
+      {% if faqs != blank %}
+
+        {% for faq in faqs %}
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>{{ faq.question }}</span>
+              <span class="faq-icon">+</span>
+            </button>
+
+            <div class="faq-answer">
+              {{ faq.test }}
+            </div>
+          </div>
+
+        {% endfor %}
+
+      {% endif %}
+    {% endfor %}
+
+  </div>
+</section>
+
+  
+<style>
+.product-faq {
+  margin: 32px 0;
+  padding: 0 0 0 0;
+}
+
+/* Title */
+.faq-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #434B57; 
+  margin-bottom: 20px;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 768px) {
+  .faq-title {
+    font-size: 16px;
+  }
+}
+
+/* Accordion layout */
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Card style */
+.faq-item {
+  background: #EDF4FF;                /* softer blue */
+  border: 1px solid #93C5FD;          /* light blue border */
+  border-radius: 14px;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Question */
+.faq-question {
+  width: 100%;
+  padding: 18px 0;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;                     
+  text-align: left;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+/* Question text behavior */
+.faq-question span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+/* Answer */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #000000;                     /* softer body text */
+}
+
+/* When active */
+.faq-item.active .faq-answer {
+  padding-bottom: 18px;
+}
+
+/* Icon */
+.faq-icon {
+  width: 28px;
+  height: 28px;
+  background: #111827;                /* dark circle */
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  margin-top: 2px;
+}
+@media (max-width: 768px) {
+
+  .faq-icon {
+    line-height: 1;
+    font-size: 18px;
+  }
+
+  .faq-icon span,
+  .faq-icon {
+    position: relative;
+    top: 1px;   
+
+}
+
+/* Optional: subtle hover */
+.faq-item:hover {
+  background: #E5EEFF;
+}
+
+/* Desktop full width fix */
+@media (min-width: 1024px) {
+  .product__info-wrapper .product-faq.page-width {
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const items = document.querySelectorAll(".faq-item");
+
+  items.forEach(function(item) {
+
+    const btn = item.querySelector(".faq-question");
+    const answer = item.querySelector(".faq-answer");
+    const icon = item.querySelector(".faq-icon");
+
+    btn.addEventListener("click", function () {
+
+      const isActive = item.classList.contains("active");
+
+      // Close all
+      items.forEach(function(i) {
+        i.classList.remove("active");
+        i.querySelector(".faq-answer").style.maxHeight = "0px";
+        i.querySelector(".faq-icon").textContent = "+";
+      });
+
+      // Open clicked
+      if (!isActive) {
+        item.classList.add("active");
+        answer.style.maxHeight = answer.scrollHeight + "px";
+        icon.textContent = "−";
+      }
+
+    });
+
+  });
+
+});
+</script>
+
+{% endif %}

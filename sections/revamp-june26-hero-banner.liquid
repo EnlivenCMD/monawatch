@@ -1,0 +1,253 @@
+{%- comment -%} ============================================================
+  REVAMP JUN26 — Hero Banner
+  File: sections/revamp-june26-hero-banner.liquid
+  Status: TEST ONLY — do not publish to live until approved
+  Design ref: Figma "monawatch 2025" / hero banner frame
+================================================================ {%- endcomment -%}
+
+{%- style -%}
+  .rj26-hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #c4a47c;
+  }
+
+  .rj26-hero__bg-desktop,
+  .rj26-hero__bg-mobile {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .rj26-hero__bg-mobile { display: none; }
+
+  @media (max-width: 749px) {
+    .rj26-hero { min-height: 380px; }
+    .rj26-hero__bg-desktop { display: none; }
+    .rj26-hero__bg-mobile { display: block; }
+  }
+
+  .rj26-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, var(--rj26-hero-overlay));
+  }
+
+  .rj26-hero__content {
+    position: relative;
+    z-index: 2;
+    padding: 48px 20px;
+    max-width: 560px;
+    width: 100%;
+  }
+
+  .rj26-hero__heading {
+    font-size: clamp(26px, 5vw, 46px);
+    font-weight: 800;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin: 0 0 10px;
+  }
+
+  .rj26-hero__subheading {
+    font-size: clamp(13px, 1.8vw, 16px);
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 28px;
+    opacity: 0.95;
+  }
+
+  .rj26-hero__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1964ae;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 13px 28px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .rj26-hero__btn:hover,
+  .rj26-hero__btn:focus-visible {
+    background: #0f4a87;
+    color: #ffffff;
+  }
+
+  .rj26-hero__btn svg {
+    flex-shrink: 0;
+  }
+{%- endstyle -%}
+
+<style>
+  #rj26-hero-{{ section.id }} {
+    --rj26-hero-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+</style>
+
+<section
+  class="rj26-hero"
+  id="rj26-hero-{{ section.id }}"
+  aria-label="{{ section.settings.heading | escape }}"
+>
+
+  {%- if section.settings.image != blank -%}
+    <img
+      class="rj26-hero__bg-desktop"
+      src="{{ section.settings.image | image_url: width: 1600 }}"
+      srcset="
+        {{ section.settings.image | image_url: width: 800 }} 800w,
+        {{ section.settings.image | image_url: width: 1200 }} 1200w,
+        {{ section.settings.image | image_url: width: 1600 }} 1600w
+      "
+      sizes="100vw"
+      alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+      loading="eager"
+      fetchpriority="high"
+      width="{{ section.settings.image.width }}"
+      height="{{ section.settings.image.height }}"
+    >
+  {%- endif -%}
+
+  {%- if section.settings.mobile_image != blank -%}
+    <img
+      class="rj26-hero__bg-mobile"
+      src="{{ section.settings.mobile_image | image_url: width: 800 }}"
+      srcset="
+        {{ section.settings.mobile_image | image_url: width: 400 }} 400w,
+        {{ section.settings.mobile_image | image_url: width: 800 }} 800w
+      "
+      sizes="100vw"
+      alt="{{ section.settings.mobile_image.alt | default: section.settings.heading | escape }}"
+      loading="eager"
+      fetchpriority="high"
+      width="{{ section.settings.mobile_image.width }}"
+      height="{{ section.settings.mobile_image.height }}"
+    >
+  {%- elsif section.settings.image != blank -%}
+    <img
+      class="rj26-hero__bg-mobile"
+      src="{{ section.settings.image | image_url: width: 800 }}"
+      alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+      loading="eager"
+      fetchpriority="high"
+    >
+  {%- endif -%}
+
+  <div class="rj26-hero__overlay"></div>
+
+  <div class="rj26-hero__content">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="rj26-hero__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <p class="rj26-hero__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <a
+        href="{{ section.settings.button_link | default: '#' }}"
+        class="rj26-hero__btn"
+      >
+        {{- section.settings.button_label -}}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    {%- endif -%}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "[REVAMP JUN26] Hero Banner",
+  "tag": "section",
+  "class": "rj26-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "⚠️ REVAMP JUN26 — Test only. Do not add to live theme until approved."
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image (desktop + mobile fallback)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Background image (mobile override)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Dark overlay opacity (%)",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "GET A FREE WATCH ROLL"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "ON ORDERS ABOVE AED 3000."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "CLAIM OFFER"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "[REVAMP JUN26] Hero Banner",
+      "settings": {
+        "heading": "GET A FREE WATCH ROLL",
+        "subheading": "ON ORDERS ABOVE AED 3000.",
+        "button_label": "CLAIM OFFER",
+        "overlay_opacity": 10
+      }
+    }
+  ]
+}
+{% endschema %}

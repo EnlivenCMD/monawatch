@@ -1,0 +1,103 @@
+
+{%- liquid
+  assign sectionId = section.id
+  assign lang = localization.language.iso_code
+  assign variant = product.selected_or_first_available_variant
+-%}
+
+<div id="TabbyPromo" style="display:none;"></div>
+
+<script>
+(function () {
+  // ---- CONFIG you must set ----
+  const TABBY_PUBLIC_KEY = 'pk_01910e29-fbf7-0e0d-889f-11ce9d614bc0'; // <-- put your real key
+
+  // Currency → decimals + merchantCode
+  const DECIMALS = { AED: 2, SAR: 2, KWD: 3 };
+  function merchantCodeFor(currency){
+    if (currency === 'SAR') return 'ksa';
+    if (currency === 'KWD') return 'kw';
+    return 'default'; // AED & others
+  }
+
+  // Pull price & currency from Shopify, not the DOM
+  const currency = {{ cart.currency.iso_code | json }}; // e.g. "AED"
+  const initialMinor = {{ product.selected_or_first_available_variant.price | json }}; // integer in minor units
+  const decimals = DECIMALS[currency] ?? 2;
+
+  // Load Tabby script
+  function loadScript(src){ return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.async = true; s.onload = res; s.onerror = rej;
+    document.body.appendChild(s);
+  });}
+
+  let tabbyInstance = null;
+
+  function renderTabby(minorAmount){
+    const price = minorAmount / Math.pow(10, decimals); // major units
+    const el = document.getElementById('TabbyPromo');
+    if (!el) return;
+
+    el.style.display = 'block';
+    el.innerHTML = ''; // reset container if re-rendering
+
+    // eslint-disable-next-line no-undef
+    tabbyInstance = new TabbyPromo({
+      selector: '#TabbyPromo',
+      currency,
+      price,
+      lang: {{ lang | json }},
+      installmentsCount: 4,
+      publicKey: TABBY_PUBLIC_KEY,
+      merchantCode: merchantCodeFor(currency),
+    });
+  }
+
+  // Listen to variant changes (themes usually dispatch this CustomEvent)
+  function bindVariantChange(){
+    document.addEventListener('variant:change', (e) => {
+      const v = e.detail?.variant;
+      if (v && typeof v.price === 'number') {
+        renderTabby(v.price);
+      }
+    });
+
+    // Common Alt events used by some themes:
+    document.addEventListener('product:variant-change', (e) => {
+      const v = e.detail?.variant;
+      if (v && typeof v.price === 'number') {
+        renderTabby(v.price);
+      }
+    });
+  }
+
+  // Fallback: observe the price live-region if your theme doesn't dispatch events
+  function fallbackObservePrice(){
+    const priceEl = document.getElementById(`price-{{ sectionId }}`);
+    if (!priceEl) return;
+    const obs = new MutationObserver(() => {
+      // Try to read the current variant price via JSON in DOM if theme injects it
+      // but safest is to rely on the events above. Keep this as last resort.
+    });
+    obs.observe(priceEl, { childList: true, subtree: true, characterData: true });
+  }
+
+  // Init
+  loadScript('https://checkout.tabby.ai/tabby-promo.js')
+    .then(() => {
+      renderTabby(initialMinor);
+      bindVariantChange();
+      fallbackObservePrice();
+    })
+    .catch(err => {
+      console.warn('Tabby script failed to load', err);
+      document.getElementById('TabbyPromo')?.style && (document.getElementById('TabbyPromo').style.display = 'none');
+    });
+})();
+</script>
+
+<style>
+  /* Keep Tabby containers visible even if empty initially */
+  #TabbyPromo div:empty, #TabbyDialogContainer div:empty { display:block; }
+</style>

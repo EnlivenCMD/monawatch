@@ -1,0 +1,52 @@
+{% assign dial = product.metafields.custom.dial_color %}
+{% assign size = product.metafields.custom.dial_size %}
+{% assign material = product.metafields.custom.material %}
+
+{% if dial != blank or size != blank or material != blank %}
+
+<div class="product__block product__block--watch-characteristics">
+
+<h3 class="watch-characteristics-heading visually-hidden">
+  Watch Characteristics
+</h3>
+
+<div class="watch-characteristics">
+
+{% if size != blank %}
+<div class="watch-box">
+<span class="watch-label">Size</span>
+<span class="watch-value">{{ size }}</span>
+</div>
+{% endif %}
+
+{% if material != blank %}
+<div class="watch-box">
+<span class="watch-label">Strap</span>
+<span class="watch-value">{{ material }}</span>
+</div>
+{% endif %}
+
+{% if dial != blank %}
+<div class="watch-box">
+<span class="watch-label">Dial</span>
+<span class="watch-value">{{ dial }}</span>
+</div>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endif %}
+
+<style>
+    .visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>

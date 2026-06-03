@@ -1,0 +1,35 @@
+{% assign sub_collections = collection.metafields.custom.sub_collections.value %}
+
+{% if sub_collections and sub_collections.size > 0 %}
+  <div class="sub-collections-wrapper">
+    <div class="sub-collections-grid">
+
+      {% for sub_collection in sub_collections %}
+        <a href="{{ sub_collection.url }}" class="sub-collection-card">
+
+          <div class="sub-collection-image">
+
+            {% if sub_collection.image %}
+              {{ sub_collection.image 
+                | image_url: width: 600 
+                | image_tag: 
+                    loading: 'lazy',
+                    alt: sub_collection.title 
+              }}
+            {% elsif sub_collection.products.first.featured_image %}
+              {{ sub_collection.products.first.featured_image 
+                | image_url: width: 600 
+                | image_tag: 
+                    loading: 'lazy',
+                    alt: sub_collection.title 
+              }}
+            {% endif %}
+
+          </div>
+
+        </a>
+      {% endfor %}
+
+    </div>
+  </div>
+{% endif %}
