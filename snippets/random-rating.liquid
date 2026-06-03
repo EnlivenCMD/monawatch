@@ -1,0 +1,9 @@
+{% assign ratings = "4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,5.0" | split: "," %}
+{% assign random_rating = ratings | sample %}
+
+{% assign review_counts = "214,238,257,289,301,315,327,342,356,371,389" | split: "," %}
+{% assign random_reviews = review_counts | sample %}
+
+<a href="#reviews" class="dev-product-rating">
+  ⭐⭐⭐⭐⭐ {{ random_rating }} • {{ random_reviews }} reviews
+</a>

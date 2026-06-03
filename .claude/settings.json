@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"e:\\\\Client Data\\\\Monawatch\\\\shopify\\\\shopify-dev\\\\theme_export__www-monawatch-com-monawatch-2026__03JUN2026-0148pm\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "mcp__claude_ai_Figma__get_design_context"
+    ]
+  }
+}

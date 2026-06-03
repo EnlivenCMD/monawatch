@@ -1,0 +1,171 @@
+{% assign logo = collection.metafields.custom.logo.value %}
+{% assign heading = collection.metafields.custom.collection_heading %}
+{% assign description = collection.metafields.custom.collection_description %}
+
+{% if logo or heading or description %}
+{% assign logo = collection.metafields.custom.logo.value %}
+{% assign heading = collection.metafields.custom.collection_heading %}
+{% assign description = collection.metafields.custom.collection_description %}
+
+{% if logo or heading or description %}
+<section class="collection-intro">
+
+  {% if heading %}
+    <h1 class="collection-intro__heading">
+      {{ heading }}
+    </h1>
+  {% endif %}
+
+  <div class="collection-intro__inner">
+
+    {% if logo %}
+      <div class="collection-intro__logo-wrapper">
+        <img
+          src="{{ logo | image_url: width: 1000 }}"
+          width="{{ logo.width }}"
+          height="{{ logo.height }}"
+          alt="{{ heading | escape }}"
+        >
+      </div>
+    {% endif %}
+
+    {% if description %}
+      <div class="collection-intro__description">
+        {{ description }}
+      </div>
+    {% endif %}
+
+  </div>
+
+</section>
+{% endif %}
+{% endif %}
+
+
+
+<style>
+
+.collection-intro {
+  padding: 20px 16px;
+  background: #f5f5f5;
+}
+
+.collection-intro__heading {
+  font-size: 18px;
+  line-height: 28px;
+  text-align: center;
+  font-weight: 600;
+  margin: 0 0 20px;
+  text-transform: uppercase;
+}
+
+.collection-intro__heading::before,
+.collection-intro__heading::after {
+  display: none;
+}
+
+/* Logo wrapper */
+.collection-intro__logo-wrapper {
+  width: 100%;
+  max-width: 350px;
+  min-height: 110px;
+  padding: 20px;
+  background: #2f66c7;
+  border-radius: 18px;
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Logo image - keep natural ratio, no forced stretching */
+.collection-intro__logo-wrapper img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70px;
+  object-fit: contain;
+  image-rendering: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Description */
+.collection-intro__description {
+  font-size: 16px;
+  text-align: justify;
+  line-height: 1.7;
+  margin: 0;
+  padding-top: 10px;
+  color: #333;
+}
+
+@media (min-width: 769px) {
+  .collection-intro {
+    padding: 40px 20px;
+  }
+
+  .collection-intro__heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+
+  .collection-intro__heading::before,
+  .collection-intro__heading::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #000;
+    opacity: 0.3;
+    display: block;
+  }
+
+  .collection-intro__inner {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+  }
+
+  .collection-intro__logo-wrapper {
+    width: 220px;
+    height: 220px; 
+    aspect-ratio: 1 / 1; 
+    margin: 0;
+    padding: 24px;
+    flex-shrink: 0;
+
+    background: #2f66c7;
+    border-radius: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .collection-intro__logo-wrapper img {
+    max-width: 80%;
+    max-height: 80%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .collection-intro__description {
+    text-align: left;
+    line-height: 1.9;
+    text-align: justify;
+  }
+}
+
+
+</style>

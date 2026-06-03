@@ -1,0 +1,189 @@
+{% assign desktop_banners = collection.metafields.custom.banner_images.value %}
+{% assign mobile_banners  = collection.metafields.custom.mobile_banner_image.value %}
+
+{% if desktop_banners or mobile_banners %}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<div class="collection-banner">
+
+  <!-- Desktop Banner -->
+  {% if desktop_banners and desktop_banners.size > 0 %}
+  <div class="collection-banner--desktop">
+    <div class="swiper swiper-desktop-{{ collection.id }}">
+      <div class="swiper-wrapper">
+        {% for image in desktop_banners %}
+          <div class="swiper-slide">
+            {% assign load_type = 'lazy' %}
+{% if forloop.first %}
+  {% assign load_type = 'eager' %}
+{% endif %}
+
+{{ image 
+  | image_url: width: 2400 
+  | image_tag:
+    loading: load_type
+}}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if desktop_banners.size > 1 %}
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Mobile Banner -->
+  {% if mobile_banners and mobile_banners.size > 0 %}
+  <div class="collection-banner--mobile">
+    <div class="swiper swiper-mobile-{{ collection.id }}">
+      <div class="swiper-wrapper">
+        {% for image in mobile_banners %}
+          <div class="swiper-slide">
+            {% assign load_type = 'lazy' %}
+{% if forloop.first %}
+  {% assign load_type = 'eager' %}
+{% endif %}
+
+{{ image 
+  | image_url: width: 1200 
+  | image_tag: loading: load_type 
+}}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if mobile_banners.size > 1 %}
+        <div class="swiper-pagination"></div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<style>
+.collection-banner {
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+}
+
+/* Desktop height */
+.collection-banner {
+  width: 100%;
+  height: auto; /* 🔥 key */
+}
+
+.collection-banner img {
+  width: 100%;
+  height: auto; /* 🔥 key */
+  display: block;
+}
+
+.collection-banner--desktop .swiper,
+.collection-banner--desktop .swiper-wrapper,
+.collection-banner--desktop .swiper-slide {
+  height: 100%;
+}
+
+/* Mobile height */
+@media (max-width: 768px) {
+  .collection-banner {
+    height: 410px;
+  }
+}
+
+.collection-banner--mobile .swiper,
+.collection-banner--mobile .swiper-wrapper,
+.collection-banner--mobile .swiper-slide {
+  height: 410px;
+}
+
+/* ✅ ONLY CHANGE HERE */
+.collection-banner img {
+  width: 100%;
+  height: 100%; /* added */
+  object-fit: cover;
+  object-position: center center; /* prevents bottom cutting */
+}
+
+/* Hide mobile on desktop */
+.collection-banner--mobile {
+  display: none;
+}
+
+/* Show mobile on small screens */
+@media (max-width: 768px) {
+  .collection-banner--desktop {
+    display: none;
+  }
+
+  .collection-banner--mobile {
+    display: block;
+  }
+}
+
+/* Remove spacing from the section that holds the banner */
+.section:has(.collection-banner) {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const desktop = document.querySelector(".swiper-desktop-{{ collection.id }}");
+  if (desktop) {
+    new Swiper(desktop, {
+      loop: true,
+      speed: 800,
+      slidesPerView: 1,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      },
+      navigation: {
+        nextEl: ".swiper-desktop-{{ collection.id }} .swiper-button-next",
+        prevEl: ".swiper-desktop-{{ collection.id }} .swiper-button-prev"
+      },
+      pagination: {
+        el: ".swiper-desktop-{{ collection.id }} .swiper-pagination",
+        clickable: true
+      }
+    });
+  }
+
+  const mobile = document.querySelector(".swiper-mobile-{{ collection.id }}");
+  if (mobile) {
+    new Swiper(mobile, {
+      loop: true,
+      speed: 700,
+      slidesPerView: 1,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false
+      },
+      pagination: {
+        el: ".swiper-mobile-{{ collection.id }} .swiper-pagination",
+        clickable: true
+      }
+    });
+  }
+
+});
+</script>
+
+{% endif %}

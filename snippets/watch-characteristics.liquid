@@ -1,0 +1,44 @@
+{% assign f1 = product.metafields.custom.characteristic_1 %}
+{% assign f2 = product.metafields.custom.characteristic_2 %}
+{% assign f3 = product.metafields.custom.feature_3 %}
+
+{% if f1 != blank or f2 != blank or f3 != blank %}
+
+<div class="product-features-icons">
+
+  {% if f1 != blank %}
+  <div class="feature-row">
+    <div class="feature-icon">
+      <img src="{{ 'Vector_ca44f874-f0db-4d01-b0bf-e4085af89804.svg' | file_url }}" width="24" height="24" alt="Feature icon">
+    </div>
+    <div class="feature-text">
+      {{ f1 }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if f2 != blank %}
+  <div class="feature-row">
+    <div class="feature-icon">
+      <img src="{{ 'Vector_ca44f874-f0db-4d01-b0bf-e4085af89804.svg' | file_url }}" width="24" height="24" alt="Feature icon">
+    </div>
+    <div class="feature-text">
+      {{ f2 }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if f3 != blank %}
+  <div class="feature-row">
+    <div class="feature-icon">
+      <img src="{{ 'Vector_ca44f874-f0db-4d01-b0bf-e4085af89804.svg' | file_url }}" width="24" height="24" alt="Feature icon">
+    </div>
+    <div class="feature-text">
+      {{ f3 }}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endif %}

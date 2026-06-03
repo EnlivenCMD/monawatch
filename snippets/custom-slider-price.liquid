@@ -1,0 +1,12 @@
+{% if product.compare_at_price > product.price %}
+  <span class="regular-price" style="text-decoration: line-through; color: #888;">
+    Retail {{ product.compare_at_price | money }}
+  </span><br>
+  <span class="sale-price" style="color: #1964AE; font-weight: bold;">
+    {{ product.price | money }}
+  </span>
+{% else %}
+  <span class="regular-price" style="color: red; font-weight: bold;">
+    {{ product.price | money }}
+  </span>
+{% endif %}

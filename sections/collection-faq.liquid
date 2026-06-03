@@ -1,0 +1,25 @@
+{% assign brand_faqs = blank %}
+
+{% for collection in product.collections %}
+  {% if collection.metafields.custom.collection_faqs.value != blank %}
+    {% assign brand_faqs = collection.metafields.custom.collection_faqs.value %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if brand_faqs != blank %}
+  <section class="collection-faq page-width">
+    <h2>FAQ</h2>
+
+    <div class="collapsible-tabs">
+      {% for faq in brand_faqs %}
+        <details class="faq-item">
+          <summary>{{ faq.question }}</summary>
+          <div class="faq-content">
+            {{ faq.answer | metafield_tag }}
+          </div>
+        </details>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

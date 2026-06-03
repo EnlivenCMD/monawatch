@@ -1,0 +1,274 @@
+{%- comment -%} ============================================================
+  REVAMP JUN26 — Explore More Brands
+  File: sections/revamp-june26-explore-brands.liquid
+  Status: TEST ONLY — do not publish to live until approved
+  Design ref: Figma "monawatch 2025" / circular brand logos row
+================================================================ {%- endcomment -%}
+
+{%- style -%}
+  .rj26-explore-brands {
+    background: #ffffff;
+    padding: var(--rj26-eb-pt) 0 var(--rj26-eb-pb);
+  }
+
+  .rj26-explore-brands__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .rj26-explore-brands__header {
+    margin-bottom: 22px;
+  }
+
+  .rj26-explore-brands__heading {
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #1a1a1a;
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+
+  .rj26-explore-brands__subheading {
+    font-size: 14px;
+    color: #666666;
+    margin: 0;
+    line-height: 1.4;
+    max-width: 380px;
+  }
+
+  /* Scrollable track */
+  .rj26-explore-brands__track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .rj26-explore-brands__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* On desktop show all in a row, wrapping if needed */
+  @media (min-width: 750px) {
+    .rj26-explore-brands__track {
+      flex-wrap: wrap;
+      overflow-x: unset;
+    }
+  }
+
+  /* Individual brand circle */
+  .rj26-brand-circle {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .rj26-brand-circle__disc {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background: #1a2b6d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .rj26-brand-circle:hover .rj26-brand-circle__disc {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(25, 100, 174, 0.3);
+  }
+
+  .rj26-brand-circle__disc-img {
+    width: 76%;
+    height: 76%;
+    object-fit: contain;
+  }
+
+  /* Text name fallback (when no logo image uploaded) */
+  .rj26-brand-circle__disc-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+    padding: 0 10px;
+    line-height: 1.25;
+    word-break: break-word;
+  }
+
+  /* Optional label below circle */
+  .rj26-brand-circle__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333333;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    max-width: 112px;
+    line-height: 1.2;
+  }
+{%- endstyle -%}
+
+<style>
+  #rj26-explore-brands-{{ section.id }} {
+    --rj26-eb-pt: {{ section.settings.padding_top }}px;
+    --rj26-eb-pb: {{ section.settings.padding_bottom }}px;
+  }
+</style>
+
+<section
+  class="rj26-explore-brands"
+  id="rj26-explore-brands-{{ section.id }}"
+>
+  <div class="rj26-explore-brands__inner">
+
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="rj26-explore-brands__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="rj26-explore-brands__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="rj26-explore-brands__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="rj26-explore-brands__track" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign col_handle = block.settings.collection -%}
+
+        <a
+          href="{% if col_handle != blank %}/collections/{{ col_handle }}{% else %}#{% endif %}"
+          class="rj26-brand-circle"
+          {{ block.shopify_attributes }}
+          role="listitem"
+          aria-label="{{ block.settings.brand_name | escape }}"
+        >
+          <div class="rj26-brand-circle__disc">
+            {%- if block.settings.logo != blank -%}
+              <img
+                src="{{ block.settings.logo | image_url: width: 200 }}"
+                alt="{{ block.settings.brand_name | escape }}"
+                class="rj26-brand-circle__disc-img"
+                loading="lazy"
+                width="{{ block.settings.logo.width }}"
+                height="{{ block.settings.logo.height }}"
+              >
+            {%- else -%}
+              <span class="rj26-brand-circle__disc-name">{{ block.settings.brand_name }}</span>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_label and block.settings.brand_name != blank -%}
+            <span class="rj26-brand-circle__label">{{ block.settings.brand_name }}</span>
+          {%- endif -%}
+        </a>
+
+      {%- else -%}
+        <p style="color:#999;">Add brand blocks in the theme editor.</p>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "[REVAMP JUN26] Explore Brands",
+  "tag": "section",
+  "class": "rj26-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "⚠️ REVAMP JUN26 — Test only. Do not add to live theme until approved."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "EXPLORE MORE BRANDS"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Section subheading",
+      "default": "Discover more authentic watch brands available at MonaWatch."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show brand name label below circle",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Brand name",
+          "info": "Shown inside circle if no logo image is uploaded",
+          "default": "BRAND"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection (sets the link)"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image (white PNG recommended, shown inside circle)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "[REVAMP JUN26] Explore Brands",
+      "blocks": [
+        { "type": "brand", "settings": { "brand_name": "EDIFICE" } },
+        { "type": "brand", "settings": { "brand_name": "CASIO" } },
+        { "type": "brand", "settings": { "brand_name": "WEST END WATCH" } },
+        { "type": "brand", "settings": { "brand_name": "CITIZEN" } },
+        { "type": "brand", "settings": { "brand_name": "G-SHOCK" } },
+        { "type": "brand", "settings": { "brand_name": "ORIENT STAR" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

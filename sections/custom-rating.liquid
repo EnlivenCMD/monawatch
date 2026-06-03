@@ -1,0 +1,18 @@
+{% comment %}
+  Custom dynamic rating between 4.0 and 5.0
+  Randomized on every page load (Shopify-safe method)
+{% endcomment %}
+
+{% assign ratings = "4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,5.0" | split: "," %}
+
+{% assign time_now = "now" | date: "%s" | plus: 0 %}
+{% assign index = time_now | modulo: ratings.size %}
+{% assign random_rating = ratings[index] %}
+
+<a href="#reviews" class="dev-product-rating">
+  <span class="dev-stars">★★★★★</span>
+  <span class="dev-rating-text">
+    {{ random_rating }} • See reviews
+  </span>
+</a>
+

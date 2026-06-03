@@ -1,0 +1,18 @@
+{% comment %}
+  Product Chips
+  Source: product.metafields.custom.chips (List of single line text)
+{% endcomment %}
+
+{% assign chips = product.metafields.custom.chips.value %}
+
+{% if chips and chips.size > 0 %}
+  <div class="product-chips-wrapper">
+    <div class="product-chips">
+      {% for chip in chips %}
+        <span class="chip chip-{{ forloop.index }}">
+          {{ chip }}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
